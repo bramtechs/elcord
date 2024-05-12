@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# Check if ImageMagick is installed
+if ! command -v convert &> /dev/null; then
+    echo "ImageMagick is not installed. Please install it to use this script."
+    exit 1
+fi
+
+# Create icons_red folder if it doesn't exist
+mkdir -p icons_red
+
+# Get all image files in the icons folder
+files=$(find icons -type f \( -iname \*.jpg -o -iname \*.jpeg -o -iname \*.png -o -iname \*.gif \))
+
+# Loop through each file
+for file in $files; do
+    # Get the filename without the path
+    filename=$(basename "$file")
+    # Tint the image red using ImageMagick and save it to icons_red folder
+    convert "$file" -fill red -colorize 70% "icons_red/$filename"
+    echo "Tinted $filename red."
+done
+
+echo "All images tinted red."
